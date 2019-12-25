@@ -1,0 +1,860 @@
+{% load staticfiles %}
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>NAMI Montana | User's Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content="http://webthemez.com"/>
+    <!-- css -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/fancybox/jquery.fancybox.css' %}" rel="stylesheet">
+    <link href="{% static 'css/flexslider.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    <!--Pulling Awesome Font -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <style></style>
+
+</head>
+<body>
+<div id="wrapper" class="home-page">
+    <div class="topbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="pull-left hidden-xs"><i class="fa fa-envelope"></i><span>matt@namimt.org </span></p>
+                    <p class="pull-right"><i class="fa fa-phone"></i>Tel No. (406) 443-7871</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- start header -->
+    <header>
+        <div class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="logo"
+                                                                         width="190px" height="50px;"/></a>
+                </div>
+                <div class="navbar-collapse collapse ">
+                    <ul class="nav navbar-nav">
+                        {% if not user.is_authenticated %}
+                            <li><a href="{% url 'home' %}">Home</a></li>
+                            <li><a href="{% url 'about' %}">About</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="{% url 'users:login' %}">Login</a></li>
+                            <li><a href="{% url 'users:signup' %}">SignUp</a></li>
+                            <li><a href="{% url 'contact' %}">Contact</a></li>
+                        {% endif %}
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'home' %}">Home</a></li>
+                            <li class="active"><a href="{% url 'users:dashboard' %}">Dashboard</a></li>
+                            <li><a href="{% url 'users:profile' %}">Profile</a></li>
+                            <li><a href="{% url 'users:logout' %}">Logout</a></li>
+                            <li><a href="{% url 'contact' %}">Contact</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'blog-home' %}">Blog</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- end header -->
+    {#	<section id="banner">#}
+    <h1 class="aligncenter"> Welcome Back, {{ user.username }}! </h1>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="panel-heading">
+                <p>The Brain Research Tagging Project involves tagging current brain research articles based upon the
+                    National Institute of Mental Health’s Research Domain Criteria.We recommend that you should complete at least five articles within each construct of a Research Domain and then move onto the next construct.Please choose one
+                    of the Research Domains below to get started.</p>
+            </div>
+            <div class="block-heading-two">
+                <span><h3><span>Select a Category:</span></h3>(Click on start Tagging by opening a category )</span>
+            </div>
+            <!-- Accordion starts -->
+            <div class="panel-group" id="accordion-alt3">
+                <!-- Panel. Use "panel-XXX" class for different colors. Replace "XXX" with color. -->
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapseOne-alt3">
+                                <i class="fa fa-angle-right"></i> Acute Threat ("Fear")
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            Activation of the brain’s defensive motivational system to promote behaviors that protect
+                            the organism from perceived danger. Normal fear involves a pattern of adaptive responses to
+                            conditioned or unconditioned threat stimuli (exteroceptive or interoceptive). Fear can
+                            involve internal representations and cognitive processing, and can be modulated by a variety
+                            of factors.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Acute Threat ("Fear")' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Acute Threat ("Fear")' %}">Start Tagging</a>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapseTwo-alt3">
+                                <i class="fa fa-angle-right"></i> Potential Threat ("Anxiety")
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo-alt3" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            Activation of a brain system in which harm may potentially occur but is distant, ambiguous,
+                            or low/uncertain in probability, characterized by a pattern of responses such as enhanced
+                            risk assessment (vigilance). These responses to low imminence threats are qualitatively
+                            different than the high imminence threat behaviors that characterize fear.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Potential Threat ("Anxiety")' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Potential Threat ("Anxiety")' %}">Start
+                                    Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapseThree-alt3">
+                                <i class="fa fa-angle-right"></i> Sustained Threat
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree-alt3" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            An aversive emotional state caused by prolonged (i.e., weeks to months) exposure to internal
+                            and/or external condition(s), state(s), or stimuli that are adaptive to escape or avoid. The
+                            exposure may be actual or anticipated; the changes in affect, cognition, physiology, and
+                            behavior caused by sustained threat persist in the absence of the threat, and can be
+                            differentiated from those changes evoked by acute threat.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Sustained Threat' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Sustained Threat' %}">Start Tagging</a>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapseFour-alt3">
+                                <i class="fa fa-angle-right"></i> Loss
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseFour-alt3" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            A state of deprivation of a motivationally significant con-specific, object, or situation.
+                            Loss may be social or non-social and may include permanent or sustained loss of shelter,
+                            behavioral control, status, loved ones, or relationships. The response to loss may be
+                            episodic (e.g., grief) or sustained.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Loss' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Loss' %}">Start Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapseFive-alt3">
+                                <i class="fa fa-angle-right"></i> Frustrative Nonreward
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseFive-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            Reactions elicited in response to withdrawal/prevention of reward, i.e., by the inability to
+                            obtain positive rewards following repeated or sustained efforts.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Frustrative Nonreward' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Frustrative Nonreward' %}">Start Tagging</a>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse6-alt3">
+                                <i class="fa fa-angle-right"></i> Approach Motivation: Reward Valuation
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse6-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            Processes by which the probability and benefits of a prospective outcome are computed and
+                            calibrated by reference to external information, social context (e.g., group input,
+                            counterfactual comparisons), and/or prior experience. This calibration is influenced by
+                            pre-existing biases, learning, memory, stimulus characteristics, and deprivation states.
+                            Reward valuation may involve the assignment of incentive salience to stimuli.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Approach Motivation: Reward Valuation' %}"
+                                  method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Approach Motivation: Reward Valuation' %}">Start
+                                    Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse7-alt3">
+                                <i class="fa fa-angle-right"></i> Approach Motivation: Effort Valuation / Willingness to
+                                Work
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse7-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            Processes by which the cost(s) of obtaining an outcome is computed; tendency to overcome
+                            response costs to obtain a reinforcer.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Approach Motivation: Effort Valuation / Willingness to Work' %}"
+                                  method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Approach Motivation: Effort Valuation / Willingness to Work' %}">Start
+                                    Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse8-alt3">
+                                <i class="fa fa-angle-right"></i> Approach Motivation: Expectancy / Reward Prediction
+                                Error
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse8-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            A state triggered by exposure to internal or external stimuli, experiences or contexts that
+                            predict the possibility of reward. Reward expectation can alter the experience of an outcome
+                            and can influence the use of resources (e.g., cognitive resources).
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Approach Motivation: Expectancy / Reward Prediction Error' %}"
+                                  method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Approach Motivation: Expectancy / Reward Prediction Error' %}">Start
+                                    Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse9-alt3">
+                                <i class="fa fa-angle-right"></i> Approach Motivation: Action Selection /
+                                Preference-Based Decision Making
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse9-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            Processes involving an evaluation of costs/benefits and occuring in the context of multiple
+                            potential choices being available for decision-making.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Approach Motivation: Action Selection / Preference-Based Decision Making' %}"
+                                  method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Approach Motivation: Action Selection / Preference-Based Decision Making' %}">Start
+                                    Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse10-alt3">
+                                <i class="fa fa-angle-right"></i>Initial Responsiveness to Reward Attainment
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse10-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            Mechanisms/processes associated with hedonic responses—as reflected in subjective
+                            experiences, behavioral responses, and/or engagement of the neural systems to a positive
+                            reinforcer—and culmination of reward seeking.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Initial Responsiveness to Reward Attainment' %}"
+                                  method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Initial Responsiveness to Reward Attainment' %}">Start
+                                    Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse11-alt3">
+                                <i class="fa fa-angle-right"></i> Sustained/Longer-Term Responsiveness to Reward
+                                Attainment
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse11-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            Mechanisms/processes associated with the termination of reward seeking, e.g., satisfaction,
+                            satiation, regulation of consummatory behavior.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Sustained/Longer-Term Responsiveness to Reward Attainment' %}"
+                                  method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Sustained/Longer-Term Responsiveness to Reward Attainment' %}">Start
+                                    Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse12-alt3">
+                                <i class="fa fa-angle-right"></i> Reward Learning
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse12-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            A process by which organisms acquire information about stimuli, actions, and contexts that
+                            predict positive outcomes, and by which behavior is modified when a novel reward occurs or
+                            outcomes are better than expected. Reward learning is a type of reinforcement learning, and
+                            similar processes may be involved in learning related to negative reinforcement.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Reward Learning' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Reward Learning' %}">Start Tagging</a>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse13-alt3">
+                                <i class="fa fa-angle-right"></i> Habit
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse13-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            Sequential, repetitive, motor, or cognitive behaviors elicited by external or internal
+                            triggers that, once initiated, can go to completion without constant conscious oversight.
+                            Habits can be adaptive by virtue of freeing up cognitive resources. Habit formation is a
+                            frequent consequence of reward learning, but its expression can become resistant to changes
+                            in outcome value. Related behaviors could be pathological expression of a process that under
+                            normal circumstances subserves adaptive goals.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Habit' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Habit' %}">Start Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse14-alt3">
+                                <i class="fa fa-angle-right"></i> Attention
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse14-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            Attention refers to a range of processes that regulate access to capacity-limited systems,
+                            such as awareness, higher perceptual processes, and motor action. The concepts of capacity
+                            limitation and competition are inherent to the concepts of selective and divided attention.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Attention' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Attention' %}">Start Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse15-alt3">
+                                <i class="fa fa-angle-right"></i> Perception
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse15-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            Perception refers to the process(es) that perform computations on sensory data to construct
+                            and transform representations of the external environment, acquire information from, and
+                            make predictions about, the external world, and guide action.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Perception' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Perception' %}">Start Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse16-alt3">
+                                <i class="fa fa-angle-right"></i> Declarative Memory
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse16-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            Declarative memory is the acquisition or encoding, storage and consolidation, and retrieval
+                            of representations of facts and events. Declarative memory provides the critical substrate
+                            for relational representations—i.e., for spatial, temporal, and other contextual relations
+                            among items, contributing to representations of events (episodic memory) and the integration
+                            and organization of factual knowledge (semantic memory). These representations facilitate
+                            the inferential and flexible extraction of new information from these relationships.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Declarative Memory' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Declarative Memory' %}">Start Tagging</a>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse17-alt3">
+                                <i class="fa fa-angle-right"></i> Language
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse17-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            Language is a system of shared symbolic representations of the world, the self and abstract
+                            concepts that supports thought and communication.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Language' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Language' %}">Start Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse18-alt3">
+                                <i class="fa fa-angle-right"></i> Cognitive Control
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse18-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            A system that modulates the operation of other cognitive and emotional systems, in the
+                            service of goal-directed behavior, when prepotent modes of responding are not adequate to
+                            meet the demands of the current context. Additionally, control processes are engaged in the
+                            case of novel contexts, where appropriate responses need to be selected from among competing
+                            alternatives.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Cognitive Control' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Cognitive Control' %}">Start Tagging</a>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse19-alt3">
+                                <i class="fa fa-angle-right"></i> Working Memory
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse19-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            Working Memory is the active maintenance and flexible updating of goal/task relevant
+                            information (items, goals, strategies, etc.) in a form that has limited capacity and resists
+                            interference. These representations: may involve flexible binding of representations; may be
+                            characterized by the absence of external support for the internally maintained
+                            representations; and are frequently temporary, though this may be due to ongoing
+                            interference. It involves active maintenance, flexible updating, limited capacity, and
+                            interference control.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Working Memory' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Working Memory' %}">Start Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse20-alt3">
+                                <i class="fa fa-angle-right"></i> Affiliation and Attachment
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse20-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            Affiliation is engagement in positive social interactions with other individuals. Attachment
+                            is selective affiliation as a consequence of the development of a social bond. Affiliation
+                            and Attachment are moderated by social information processing (processing of social cues)
+                            and social motivation. Affiliation is a behavioral consequence of social motivation and can
+                            manifest itself in social approach behaviors. Affiliation and Attachment require detection
+                            of and attention to social cues, as well as social learning and memory associated with the
+                            formation of relationships. Affiliation and Attachment include both the positive
+                            physiological consequences of social interactions and the behavioral and physiological
+                            consequences of disruptions to social relationships. Clinical manifestations of disruptions
+                            in Affiliation and Attachment include social withdrawal, social indifference and anhedonia,
+                            and over-attachment.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Affiliation and Attachment' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Affiliation and Attachment' %}">Start
+                                    Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse21-alt3">
+                                <i class="fa fa-angle-right"></i> Social Communication
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse21-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            A dynamic process that includes both receptive and productive aspects used for exchange of
+                            socially relevant information. Social communication is essential for the integration and
+                            maintenance of the individual in the social environment. This construct is reciprocal and
+                            interactive, and social communication abilities may appear very early in life. Social
+                            communication is distinguishable from other cognitive systems (e.g., perception, cognitive
+                            control, memory, attention) in that it particularly involves interactions with conspecifics.
+                            The underlying neural substrates of social communication evolved to support both
+                            automatic/reflexive and volitional control, including the motivation and ability to engage
+                            in social communication. Receptive aspects may be implicit or explicit; examples include
+                            affect recognition, facial recognition and characterization. Productive aspects include eye
+                            contact, expressive reciprocation, and gaze following.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Social Communication' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Social Communication' %}">Start Tagging</a>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse22-alt3">
+                                <i class="fa fa-angle-right"></i> Perception and Understanding of Self: Agency
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse22-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            The ability to recognize one’s self as the agent of one’s actions and thoughts, including
+                            the recognition of one’s own body/body parts.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Perception and Understanding of Self: Agency' %}"
+                                  method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Perception and Understanding of Self: Agency' %}">Start
+                                    Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse23-alt3">
+                                <i class="fa fa-angle-right"></i> Perception and Understanding of Self: Self-Knowledge
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse23-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            The ability to make judgments about one’s current cognitive or emotional internal states,
+                            traits, and/or abilities.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Perception and Understanding of Self: Self-Knowledge' %}"
+                                  method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Perception and Understanding of Self: Self-Knowledge' %}">Start
+                                    Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse24-alt3">
+                                <i class="fa fa-angle-right"></i> Perceptions and Understanding of Others: Animacy
+                                Perception
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse24-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            The ability to appropriately perceive that another entity is an agent (i.e., has a face,
+                            interacts contingently, and exhibits biological motion).
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Perceptions and Understanding of Others: Animacy Perception' %}"
+                                  method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Perceptions and Understanding of Others: Animacy Perception' %}">Start
+                                    Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse25-alt3">
+                                <i class="fa fa-angle-right"></i> Perceptions and Understanding of Others: Action
+                                Perception
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse25-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            The ability to perceive the purpose of an action being performed by an animate entity.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Perceptions and Understanding of Others: Action Perception' %}"
+                                  method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Perceptions and Understanding of Others: Action Perception' %}">Start
+                                    Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse26-alt3">
+                                <i class="fa fa-angle-right"></i> Perceptions and Understanding of Others: Understanding
+                                Mental States
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse26-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            The ability to make judgments and/or attributions about the mental state of other animate
+                            entities that allows one to predict or interpret their behaviors. Mental state refers to
+                            intentions, beliefs, desires, and emotions.
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Perceptions and Understanding of Others: Understanding Mental States' %}"
+                                  method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Perceptions and Understanding of Others: Understanding Mental States' %}">Start
+                                    Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse27-alt3">
+                                <i class="fa fa-angle-right"></i> Arousal
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse27-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            "Arousal is a continuum of sensitivity of the organism to stimuli, both external and
+                            internal. Arousal:
+
+                            <br/>(1) Facilitates interaction with the environment in a context-specific manner (e.g.,
+                            under conditions of threat, some stimuli must be ignored while sensitivity to and responses
+                            to others is enhanced, as exemplified in the startle reflex),
+                            <br/>(2) Can be evoked by either external/environmental stimuli or internal stimuli (e.g.,
+                            emotions and cognition),
+                            <br/>(3) Can be modulated by the physical characteristics and motivational significance of
+                            stimuli,
+                            <br/>(4) Varies along a continuum that can be quantified in any behavioral state, including
+                            wakefulness and low-arousal states including sleep, anesthesia, and coma,
+                            <br/>(5) Is distinct from motivation and valence but can covary with intensity of motivation
+                            and valence,
+                            <br/>(6) May be associated with increased or decreased locomotor activity, and
+                            <br/>(7) Can be regulated by homeostatic drives (e.g., hunger, sleep, thirst, sex)."
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Arousal' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Arousal' %}">Start Tagging</a></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse28-alt3">
+                                <i class="fa fa-angle-right"></i> Circadian Rhythms
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse28-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            "Circadian Rhythms are endogenous self-sustaining oscillations that organize the timing of
+                            biological systems to optimize physiology and behavior, and health. Circadian Rhythms:
+
+                            <br/>(1) Are synchronized by recurring environmental cues;
+                            <br/>(2) Anticipate the external environment;
+                            <br/>(3) Allow effective response to challenges and opportunities in the physical and social
+                            environment;
+                            <br/>(4) Modulate homeostasis within the brain and other (central/peripheral) systems,
+                            tissues and organs;
+                            <br/>(5) Are evident across levels of organization including molecules, cells, circuits,
+                            systems, organisms, and social systems."
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Circadian Rhythms' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Circadian Rhythms' %}">Start Tagging</a>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <!-- Panel heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-alt3" href="#collapse29-alt3">
+                                <i class="fa fa-angle-right"></i> Sleep-Wakefulness
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse29-alt3" class="panel-collapse collapse">
+                        <!-- Panel body -->
+                        <div class="panel-body">
+                            "Sleep and wakefulness are endogenous, recurring, behavioral states that reflect coordinated
+                            changes in the dynamic functional organization of the brain and that optimize physiology,
+                            behavior, and health. Homeostatic and circadian processes regulate the propensity for
+                            wakefulness and sleep. Sleep:
+                            <br/>
+                            (1) Is reversible, typically characterized by postural recumbence, behavioral quiescence,
+                            and reduced responsiveness;
+                            <br/>
+                            (2) Has a complex architecture with predictable cycling of NREM/REM states or their
+                            developmental equivalents. NREM and REM sleep have distinct neural substrates (circuitry,
+                            transmitters, modulators) and EEG oscillatory properties
+                            <br/>(3) Intensity and duration is affected by homeostatic regulation;
+                            <br/>(4) Is affected by experiences during wakefulness;
+                            <br/>(5) Is evident at cellular, circuit, and system levels;
+                            <br/>(6) Has restorative and transformative effects that optimize neurobehavioral functions
+                            during wakefulness."
+                            <br/>
+                            <form action="{% url 'users:tagging' cat='Sleep-Wakefulness' %}" method="get">
+                                <button class="btn pull-right" type="submit"><a
+                                        href="{% url 'users:tagging' cat='Sleep-Wakefulness' %}">Start Tagging</a>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Accordion ends -->
+
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+{% include 'footer.html' %}

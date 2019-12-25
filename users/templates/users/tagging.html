@@ -1,0 +1,440 @@
+{% load staticfiles %}
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>NAMI Montana | User's Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content="http://webthemez.com"/>
+    <!-- css -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/fancybox/jquery.fancybox.css' %}" rel="stylesheet">
+    <link href="{% static 'css/flexslider.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    <!--Pulling Awesome Font -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <style></style>
+
+</head>
+<body>
+<div id="wrapper" class="home-page">
+    <div class="topbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="pull-left hidden-xs"><i class="fa fa-envelope"></i><span>matt@namimt.org </span></p>
+                    <p class="pull-right"><i class="fa fa-phone"></i>Tel No. (406) 443-7871</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- start header -->
+    <header>
+        <div class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="logo"
+                                                                         width="190px" height="50px;"/></a>
+                </div>
+                <div class="navbar-collapse collapse ">
+                    <ul class="nav navbar-nav">
+                        {% if not user.is_authenticated %}
+                            <li><a href="{% url 'home' %}">Home</a></li>
+                            <li><a href="{% url 'about' %}">About</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="{% url 'users:login' %}">Login</a></li>
+                            <li><a href="{% url 'users:signup' %}">SignUp</a></li>
+                            <li><a href="{% url 'contact' %}">Contact</a></li>
+                        {% endif %}
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'home' %}">Home</a></li>
+                            <li class="active"><a href="{% url 'users:dashboard' %}">Dashboard</a></li>
+                            <li><a href="{% url 'users:profile' %}">Profile</a></li>
+                            <li><a href="{% url 'users:logout' %}">Logout</a></li>
+                            <li><a href="{% url 'contact' %}">Contact</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'blog-home' %}">Blog</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- end header -->
+    {#	<section id="banner">#}
+    <h1 class="aligncenter"> Welcome Back, {{ user.username }}! </h1>
+    <div class="row">
+        <div class="col-md-2" style="margin-left: 3%">
+            <form action="{% url 'users:dashboard' %}" method="get">
+                <button type="submit" class="btn"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    Back
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {% for art in articles %}
+                <div class="col-md-8">
+                    <div class="block-heading-two">
+                        <h4><span>Your are Tagging article No: <i
+                                style="color: darkred">{{ art.id }}</i> &nbsp; from <strong> <i
+                                style="color: darkred">{{ art.category }}</i></strong></span></h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <iframe src="{{ art.link }}" width="100%" height="550px"></iframe>
+                        </div>
+                    </div>
+                    <!-- Accordion starts -->
+                </div>
+                <div class="col-md-4">
+                    <div class="panel-group" id="accordion-alt3">
+                        <div class="col-xs-12">
+                            <form class="omb_loginForm" action="{% url 'users:tagged' %}" method="POST">
+                                {% csrf_token %}
+                                <table class="table">
+                                    <thead>
+                                    <h4> Tag this Article:</h4>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th>Reviewer:</th>
+                                        <td></td>
+                                        <td>{{ user.username }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>No of Article Reviewed:</th>
+                                        <td></td>
+                                        <td>{{ user.tagging.all |length }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Category:</th>
+                                        <td></td>
+                                        <td>{{ art.category }}
+                                            <input type="hidden" value="{{ art.id }}" name="article"/>
+                                            <input type="hidden" value="{{ art.link }}" name="link"/>
+                                            <input type="hidden" value="{{ art.category }}" name="category"/>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <th>Category Description:</th>
+                                        {% if art.category == 'Acute Threat ("Fear")' %}
+                                            <td colspan="3"> Activation of the brain’s defensive motivational system to
+                                                promote behaviors that protect the organism from perceived danger.
+                                                Normal fear involves a pattern of adaptive responses to conditioned or
+                                                unconditioned threat stimuli (exteroceptive or interoceptive). Fear can
+                                                involve internal representations and cognitive processing, and can be
+                                                modulated by a variety of factors.
+                                            </td>
+                                        {% elif art.category == 'Potential Threat ("Anxiety")' %}
+                                            <td colspan="3">Activation of a brain system in which harm may potentially
+                                                occur but is distant, ambiguous, or low/uncertain in probability,
+                                                characterized by a pattern of responses such as enhanced risk assessment
+                                                (vigilance). These responses to low imminence threats are qualitatively
+                                                different than the high imminence threat behaviors that characterize
+                                                fear.
+                                            </td>
+                                        {% elif art.category == 'Sustained Threat' %}
+                                            <td colspan="3">An aversive emotional state caused by prolonged (i.e., weeks
+                                                to months) exposure to internal and/or external condition(s), state(s),
+                                                or stimuli that are adaptive to escape or avoid. The exposure may be
+                                                actual or anticipated; the changes in affect, cognition, physiology, and
+                                                behavior caused by sustained threat persist in the absence of the
+                                                threat, and can be differentiated from those changes evoked by acute
+                                                threat.
+                                            </td>
+                                        {% elif art.category == 'Loss' %}
+                                            <td colspan="3">A state of deprivation of a motivationally significant
+                                                con-specific, object, or situation. Loss may be social or non-social and
+                                                may include permanent or sustained loss of shelter, behavioral control,
+                                                status, loved ones, or relationships. The response to loss may be
+                                                episodic (e.g., grief) or sustained.
+                                            </td>
+                                        {% elif art.category == 'Frustrative Nonreward' %}
+                                            <td colspan="3">Reactions elicited in response to withdrawal/prevention of
+                                                reward, i.e., by the inability to obtain positive rewards following
+                                                repeated or sustained efforts.
+                                            </td>
+                                        {% elif art.category == 'Approach Motivation: Reward Valuation' %}
+                                            <td colspan="3">Processes by which the probability and benefits of a
+                                                prospective outcome are computed and calibrated by reference to external
+                                                information, social context (e.g., group input, counterfactual
+                                                comparisons), and/or prior experience. This calibration is influenced by
+                                                pre-existing biases, learning, memory, stimulus characteristics, and
+                                                deprivation states. Reward valuation may involve the assignment of
+                                                incentive salience to stimuli.
+                                            </td>
+                                        {% elif art.category == 'Approach Motivation: Effort Valuation / Willingness to Work' %}
+                                            <td colspan="3">Processes by which the cost(s) of obtaining an outcome is
+                                                computed; tendency to overcome response costs to obtain a reinforcer.
+                                            </td>
+                                        {% elif art.category == 'Approach Motivation: Expectancy / Reward Prediction Error' %}
+                                            <td colspan="3">A state triggered by exposure to internal or external
+                                                stimuli, experiences or contexts that predict the possibility of reward.
+                                                Reward expectation can alter the experience of an outcome and can
+                                                influence the use of resources (e.g., cognitive resources).
+                                            </td>
+                                        {% elif art.category == 'Approach Motivation: Action Selection / Preference-Based Decision Making' %}
+                                            <td colspan="3">Processes involving an evaluation of costs/benefits and
+                                                occuring in the context of multiple potential choices being available
+                                                for decision-making.
+                                            </td>
+                                        {% elif art.category == 'Initial Responsiveness to Reward Attainment' %}
+                                            <td colspan="3">Mechanisms/processes associated with hedonic responses—as
+                                                reflected in subjective experiences, behavioral responses, and/or
+                                                engagement of the neural systems to a positive reinforcer—and
+                                                culmination of reward seeking.
+                                            </td>
+                                        {% elif art.category == 'Sustained/Longer-Term Responsiveness to Reward Attainment' %}
+                                            <td colspan="3">Mechanisms/processes associated with the termination of
+                                                reward seeking, e.g., satisfaction, satiation, regulation of
+                                                consummatory behavior.
+                                            </td>
+                                        {% elif art.category == 'Reward Learning' %}
+                                            <td colspan="3">A process by which organisms acquire information about
+                                                stimuli, actions, and contexts that predict positive outcomes, and by
+                                                which behavior is modified when a novel reward occurs or outcomes are
+                                                better than expected. Reward learning is a type of reinforcement
+                                                learning, and similar processes may be involved in learning related to
+                                                negative reinforcement.
+                                            </td>
+                                        {% elif art.category == 'Habit' %}
+                                            <td colspan="3">Sequential, repetitive, motor, or cognitive behaviors
+                                                elicited by external or internal triggers that, once initiated, can go
+                                                to completion without constant conscious oversight. Habits can be
+                                                adaptive by virtue of freeing up cognitive resources. Habit formation is
+                                                a frequent consequence of reward learning, but its expression can become
+                                                resistant to changes in outcome value. Related behaviors could be
+                                                pathological expression of a process that under normal circumstances
+                                                subserves adaptive goals.
+                                            </td>
+                                        {% elif art.category == 'Attention' %}
+                                            <td colspan="3">Attention refers to a range of processes that regulate
+                                                access to capacity-limited systems, such as awareness, higher perceptual
+                                                processes, and motor action. The concepts of capacity limitation and
+                                                competition are inherent to the concepts of selective and divided
+                                                attention.
+                                            </td>
+                                        {% elif art.category == 'Perception' %}
+                                            <td colspan="3">Perception refers to the process(es) that perform
+                                                computations on sensory data to construct and transform representations
+                                                of the external environment, acquire information from, and make
+                                                predictions about, the external world, and guide action.
+                                            </td>
+                                        {% elif art.category == 'Declarative Memory' %}
+                                            <td colspan="3">Declarative memory is the acquisition or encoding, storage
+                                                and consolidation, and retrieval of representations of facts and events.
+                                                Declarative memory provides the critical substrate for relational
+                                                representations—i.e., for spatial, temporal, and other contextual
+                                                relations among items, contributing to representations of events
+                                                (episodic memory) and the integration and organization of factual
+                                                knowledge (semantic memory). These representations facilitate the
+                                                inferential and flexible extraction of new information from these
+                                                relationships.
+                                            </td>
+                                        {% elif art.category == 'Language' %}
+                                            <td colspan="3">Language is a system of shared symbolic representations of
+                                                the world, the self and abstract concepts that supports thought and
+                                                communication.
+                                            </td>
+                                        {% elif art.category == 'Cognitive Control' %}
+                                            <td colspan="3">A system that modulates the operation of other cognitive and
+                                                emotional systems, in the service of goal-directed behavior, when
+                                                prepotent modes of responding are not adequate to meet the demands of
+                                                the current context. Additionally, control processes are engaged in the
+                                                case of novel contexts, where appropriate responses need to be selected
+                                                from among competing alternatives.
+                                            </td>
+                                        {% elif art.category == 'Working Memory' %}
+                                            <td colspan="3">Working Memory is the active maintenance and flexible
+                                                updating of goal/task relevant information (items, goals, strategies,
+                                                etc.) in a form that has limited capacity and resists interference.
+                                                These representations: may involve flexible binding of representations;
+                                                may be characterized by the absence of external support for the
+                                                internally maintained representations; and are frequently temporary,
+                                                though this may be due to ongoing interference. It involves active
+                                                maintenance, flexible updating, limited capacity, and interference
+                                                control.
+                                            </td>
+                                        {% elif art.category == 'Affiliation and Attachment' %}
+                                            <td colspan="3">Affiliation is engagement in positive social interactions
+                                                with other individuals. Attachment is selective affiliation as a
+                                                consequence of the development of a social bond. Affiliation and
+                                                Attachment are moderated by social information processing (processing of
+                                                social cues) and social motivation. Affiliation is a behavioral
+                                                consequence of social motivation and can manifest itself in social
+                                                approach behaviors. Affiliation and Attachment require detection of and
+                                                attention to social cues, as well as social learning and memory
+                                                associated with the formation of relationships. Affiliation and
+                                                Attachment include both the positive physiological consequences of
+                                                social interactions and the behavioral and physiological consequences of
+                                                disruptions to social relationships. Clinical manifestations of
+                                                disruptions in Affiliation and Attachment include social withdrawal,
+                                                social indifference and anhedonia, and over-attachment.
+                                            </td>
+                                        {% elif art.category == 'Social Communication' %}
+                                            <td colspan="3">A dynamic process that includes both receptive and
+                                                productive aspects used for exchange of socially relevant information.
+                                                Social communication is essential for the integration and maintenance of
+                                                the individual in the social environment. This construct is reciprocal
+                                                and interactive, and social communication abilities may appear very
+                                                early in life. Social communication is distinguishable from other
+                                                cognitive systems (e.g., perception, cognitive control, memory,
+                                                attention) in that it particularly involves interactions with
+                                                conspecifics. The underlying neural substrates of social communication
+                                                evolved to support both automatic/reflexive and volitional control,
+                                                including the motivation and ability to engage in social communication.
+                                                Receptive aspects may be implicit or explicit; examples include affect
+                                                recognition, facial recognition and characterization. Productive aspects
+                                                include eye contact, expressive reciprocation, and gaze following.
+                                            </td>
+                                        {% elif art.category == 'Perception and Understanding of Self: Agency' %}
+                                            <td colspan="3">The ability to recognize one’s self as the agent of one’s
+                                                actions and thoughts, including the recognition of one’s own body/body
+                                                parts.
+                                            </td>
+                                        {% elif art.category == 'Perception and Understanding of Self: Self-Knowledge' %}
+                                            <td colspan="3">The ability to make judgments about one’s current cognitive
+                                                or emotional internal states, traits, and/or abilities.
+                                            </td>
+                                        {% elif art.category == 'Perceptions and Understanding of Others: Animacy Perception' %}
+                                            <td colspan="3">The ability to appropriately perceive that another entity is
+                                                an agent (i.e., has a face, interacts contingently, and exhibits
+                                                biological motion).
+                                            </td>
+                                        {% elif art.category == 'Perceptions and Understanding of Others: Action Perception' %}
+                                            <td colspan="3">The ability to perceive the purpose of an action being
+                                                performed by an animate entity.
+                                            </td>
+                                        {% elif art.category == 'Perceptions and Understanding of Others: Understanding Mental States' %}
+                                            <td colspan="3">The ability to make judgments and/or attributions about the
+                                                mental state of other animate entities that allows one to predict or
+                                                interpret their behaviors. Mental state refers to intentions, beliefs,
+                                                desires, and emotions.
+                                            </td>
+                                        {% elif art.category == 'Arousal' %}
+                                            <td colspan="3">"Arousal is a continuum of sensitivity of the organism to
+                                                stimuli, both external and internal. Arousal:
+                                                <br/>(1) Facilitates interaction with the environment in a
+                                                context-specific manner (e.g., under conditions of threat, some stimuli
+                                                must be ignored while sensitivity to and responses to others is
+                                                enhanced, as exemplified in the startle reflex),
+                                                <br/>(2) Can be evoked by either external/environmental stimuli or
+                                                internal stimuli (e.g., emotions and cognition),
+                                                <br/>(3) Can be modulated by the physical characteristics and
+                                                motivational significance of stimuli,
+                                                <br/>(4) Varies along a continuum that can be quantified in any
+                                                behavioral state, including wakefulness and low-arousal states including
+                                                sleep, anesthesia, and coma,
+                                                <br/>(5) Is distinct from motivation and valence but can covary with
+                                                intensity of motivation and valence,
+                                                <br/>(6) May be associated with increased or decreased locomotor
+                                                activity, and
+                                                <br/>(7) Can be regulated by homeostatic drives (e.g., hunger, sleep,
+                                                thirst, sex)."
+                                            </td>
+                                        {% elif art.category == 'Circadian Rhythms' %}
+                                            <td colspan="3">"Circadian Rhythms are endogenous self-sustaining
+                                                oscillations that organize the timing of biological systems to optimize
+                                                physiology and behavior, and health. Circadian Rhythms:
+                                                <br/>(1) Are synchronized by recurring environmental cues;
+                                                <br/>(2) Anticipate the external environment;
+                                                <br/>(3) Allow effective response to challenges and opportunities in the
+                                                physical and social environment;
+                                                <br/>(4) Modulate homeostasis within the brain and other
+                                                (central/peripheral) systems, tissues and organs;
+                                                <br/>(5) Are evident across levels of organization including molecules,
+                                                cells, circuits, systems, organisms, and social systems."
+                                            </td>
+                                        {% elif art.category == 'Sleep-Wakefulness' %}
+                                            <td colspan="3">"Sleep and wakefulness are endogenous, recurring, behavioral
+                                                states that reflect coordinated changes in the dynamic functional
+                                                organization of the brain and that optimize physiology, behavior, and
+                                                health. Homeostatic and circadian processes regulate the propensity for
+                                                wakefulness and sleep. Sleep:
+                                                <br/>
+                                                (1) Is reversible, typically characterized by postural recumbence,
+                                                behavioral quiescence, and reduced responsiveness;
+                                                <br/>
+                                                (2) Has a complex architecture with predictable cycling of NREM/REM
+                                                states or their developmental equivalents. NREM and REM sleep have
+                                                distinct neural substrates (circuitry, transmitters, modulators) and EEG
+                                                oscillatory properties
+                                                <br/>(3) Intensity and duration is affected by homeostatic regulation;
+                                                <br/>(4) Is affected by experiences during wakefulness;
+                                                <br/>(5) Is evident at cellular, circuit, and system levels;
+                                                <br/>(6) Has restorative and transformative effects that optimize
+                                                neurobehavioral functions during wakefulness."
+                                            </td>
+
+                                        {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <th>Does the text of this article fit in this category?</th>
+                                        <td><label class="radio-inline"><input type="radio" name="category_fit"
+                                                                               value="yes">Yes</label></td>
+                                        <td><label class="radio-inline"><input type="radio" name="category_fit"
+                                                                               value="no">No</label></td>
+                                        <td><label class="radio-inline"><input type="radio" name="category_fit"
+                                                                               value="not sure">Not Sure</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="comment">Copy and then paste in a relevant sentence for
+                                            categorization:</label></th>
+                                        <td colspan="3">
+                                            <textarea class="form-control" rows="7" id="comment"
+                                                      name="relevant_feedback"></textarea>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">Tag</button>
+                            </form>
+                        </div>
+
+                    </div>
+                    <!-- Accordion ends -->
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-3 col-md-offset-4">
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li class="page-item">
+                    {% if articles.has_previous %}
+                        <a href="?{{ page_request_var }}={{ articles.previous_page_number }}"
+                           class="page-link">Previous</a>
+                    {% endif %}
+                </li>
+                {% if not articles|length == 0 %}
+                    <li class="page-item active">
+                        <a class="page-link" href="#">Page {{ articles.number }}<span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                {% else %}
+                    <h4 class="info-blocks"> This category don't have any article yet! </h4>
+                {% endif %}
+                <li class="page-item">
+                    {% if articles.has_next %}
+                        <a class="page-link" href="?{{ page_request_var }}={{ articles.next_page_number }}">Next</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="clear"></div>
+{% include 'footer.html' %}
