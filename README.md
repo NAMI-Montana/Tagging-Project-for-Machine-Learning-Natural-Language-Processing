@@ -83,4 +83,4 @@ Authentication and Authorization
                   
                   
 ## Documentation:
-You can find the complete documentation of the           
+You can find the complete documentation of the [here](https://tagging-project-for-machine-learning-natural-language-processin.readthedocs.io/en/latest/index.html).      
