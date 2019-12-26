@@ -4,7 +4,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = '87!!ehvvfnazi$vn#8npqh*+run1l3u7#i3t9(c!1wzt_&9yh&'
 
 DEBUG = True
 
