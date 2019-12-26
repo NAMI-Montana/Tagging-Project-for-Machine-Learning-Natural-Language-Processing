@@ -1,0 +1,108 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>NAMI Montana | About </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content="http://webthemez.com"/>
+    <!-- css -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/fancybox/jquery.fancybox.css' %}" rel="stylesheet">
+    <link href="{% static 'css/flexslider.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+<div id="wrapper" class="home-page">
+    <div class="topbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="pull-left hidden-xs"><i class="fa fa-envelope"></i><span>matt@namimt.org </span></p>
+                    <p class="pull-right"><i class="fa fa-phone"></i>Tel No. (406) 443-7871</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- start header -->
+    <header>
+        <div class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="logo"
+                                                                         width="190px" height="50px;"/></a>
+                </div>
+                <div class="navbar-collapse collapse ">
+                    <ul class="nav navbar-nav">
+                        {% if not user.is_authenticated %}
+                            <li class="active"><a href="{% url 'about' %}">About</a></li>
+                            <li><a href="{% url 'blog-home' %}">Blog</a></li>
+                            <li><a href="{% url 'users:login' %}">Login</a></li>
+                            <li><a href="{% url 'users:signup' %}">SignUp</a></li>
+                            <li><a href="{% url 'blog-home' %}">Blog</a></li>
+                            <li><a href="{% url 'contact' %}">Contact</a></li>
+                        {% endif %}
+                        {% if user.is_authenticated %}
+                            <li class="active"><a href="{% url 'home' %}">Home</a></li>
+                            <li><a href="{% url 'users:dashboard' %}">Dashboard</a></li>
+                            <li><a href="{% url 'users:profile' %}">Profile</a></li>
+                            <li><a href="{% url 'users:logout' %}">Logout</a></li>
+                            <li class="active"><a href="{% url 'about' %}">About</a></li>
+                            <li><a href="{% url 'blog-home' %}">Blog</a></li>
+                            <li><a href="{% url 'contact' %}">Contact</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- end header -->
+    <section id="inner-headline">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="pageTitle" style="text-decoration: underline">About Us</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="content">
+
+        <div class="container content">
+            <div class="row">
+                <p class="col-md-12">
+                <p class="about-logo">
+                    {#                <h3 style="text-decoration: underline;">About <span class="color">Us</span></h3>#}
+                <p>The Brain Research Tagging Project, a collaboration between NAMI Montana and Montana State University
+                    (MSU). The project was developed by Dr. Indika Kahanda and Shriyansh Kothari of Montana State
+                    University with Matt Kuntz of NAMI Montana.</p>
+
+                <p>We're excited to offer you a great way to learn about cutting edge brain science while helping to
+                    build a comprehensive brain research database that will help illuminate the current status of brain
+                    research and potential future research areas. The Brain Research Tagging Project involves "tagging,"
+                    or classifying, current brain research articles based upon the National Institute of Mental Health's
+                    Research Domain Criteria. This is a great active learning method to allow anyone to engage with and
+                    learn from a massive curated collection of brain science research articles.</p>
+
+                <p>Each article a reviewer "tags" builds and strengthens the brain science review database and the
+                    machine learning tools used to analyze the database. We can't wait to see what kind insights will be
+                    revealed by this combination of brain science education, crowdsourcing and machine learning. Thanks
+                    for being part of this critical effort!</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% include 'footer.html' %}
