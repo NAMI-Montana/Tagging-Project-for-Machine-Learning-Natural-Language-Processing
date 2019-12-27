@@ -1,0 +1,153 @@
+
+
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Urls &#8212; BrtSite 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Views" href="blog_views.html" />
+    <link rel="prev" title="Models" href="blog_models.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="blog_views.html" title="Views"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="blog_models.html" title="Models"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">BrtSite 1.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="blog.html" accesskey="U">Blog</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Urls</a><ul>
+<li><a class="reference internal" href="#all-urls">All urls</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="blog_models.html"
+                        title="previous chapter">Models</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="blog_views.html"
+                        title="next chapter">Views</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/blog_urls.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="urls">
+<h1>Urls<a class="headerlink" href="#urls" title="Permalink to this headline">¶</a></h1>
+<p><strong>File:</strong> <em>./blod/urls.py</em></p>
+<div class="topic">
+<p class="topic-title first">Explanation:</p>
+<p>In this file, you will find all the url patterns to load various pages
+and call the corresponding views.</p>
+</div>
+<div class="compound">
+<p>In this file, we have all the database models related to blog app and
+these are the followings.</p>
+</div>
+<div class="section" id="all-urls">
+<h2>All urls<a class="headerlink" href="#all-urls" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">‘blog-home’</dt>
+<dd class="field-odd"><p>This is the path to the home page of Blog.</p>
+</dd>
+<dt class="field-even">search</dt>
+<dd class="field-even"><p>Will land you to the search page to search for blog posts.</p>
+</dd>
+<dt class="field-odd">post/&lt;id&gt;</dt>
+<dd class="field-odd"><p>By this url, you can access a specific post by passing it’s id in the url.</p>
+</dd>
+<dt class="field-even">category/(?P&lt;link&gt;[w|-]+)/$</dt>
+<dd class="field-even"><p>Using this, you can access all posts under a same category.</p>
+</dd>
+<dt class="field-odd">post/new</dt>
+<dd class="field-odd"><p>Will land you to page where you can create new blog posts (if you have permissions to do so).</p>
+</dd>
+<dt class="field-even">post/delete/&lt;id&gt;</dt>
+<dd class="field-even"><p>By logging to this url, you can delete a post (if you have permissions to do so).</p>
+</dd>
+<dt class="field-odd">comment/new</dt>
+<dd class="field-odd"><p>This url will handle the creation of a comment on a blog post.</p>
+</dd>
+</dl>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="blog_views.html" title="Views"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="blog_models.html" title="Models"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">BrtSite 1.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="blog.html" >Blog</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Abdul Rehman.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.3.1.
+    </div>
+  </body>
+</html>

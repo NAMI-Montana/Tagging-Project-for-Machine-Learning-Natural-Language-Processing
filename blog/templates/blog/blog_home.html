@@ -1,0 +1,151 @@
+{% load recent_blog_posts %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>NAMI Montana | Brain Research Tagging</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content="http://webthemez.com"/>
+    <!-- css -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/fancybox/jquery.fancybox.css' %}" rel="stylesheet">
+    <link href="{% static 'css/flexslider.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+
+</head>
+<body>
+<div id="wrapper" class="home-page">
+    <div class="topbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="pull-left hidden-xs"><i class="fa fa-envelope"></i><span>matt@namimt.org </span></p>
+                    <p class="pull-right"><i class="fa fa-phone"></i>Tel No. (406) 443-7871</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- start header -->
+    <header>
+        <div class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="logo"
+                                                                         width="190px" height="50px;"/></a>
+                </div>
+                <div class="navbar-collapse collapse ">
+                    <ul class="nav navbar-nav">
+                        {% if not user.is_authenticated %}
+                            <li><a href="{% url 'about' %}">About</a></li>
+                            <li class="active"><a href="{% url 'blog-home' %}">Blog</a></li>
+                            <li><a href="{% url 'contact' %}">Contact</a></li>
+                        {% endif %}
+                        {% if user.is_authenticated %}
+                            <li class="active"><a href="{% url 'users:logout' %}">Logout</a></li>
+                            <li><a href="{% url 'about' %}">About</a></li>
+                            <li class="active"><a href="{% url 'blog-home' %}">Blog</a></li>
+                            <li><a href="{% url 'contact' %}">Contact</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    {% block content %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col" style="min-width: 100%;">
+                    <div class="col-lg-9" style="min-width: 75%">
+                        <div class="row">
+                            {% if not posts.count > 0 %}
+                                <div class="col-lg-4 pt-3 container" style="margin-top: 5%">
+                                    <strong><h4>Sorry, no Posts found!</h4></strong>
+                                </div>
+                            {% else %}
+                                {% for post in posts %}
+                                    <div class="col-lg-4 col-sm-6 mb-4" style="margin-top: 2%">
+                                        <div class="card shadow border-0 h-100"><a href="post.html">
+                                            <img src="{{ post.photo.url }}"
+                                                 alt="..." class="img-fluid card-img-top"></a>
+                                            <div class="card-body">
+                                                {% if post.category == 'BRTN' %}
+                                                    <a href="category/brain-research-tagging-news"
+                                                       class="text-uppercase text-muted text-sm letter-spacing-2">Brain
+                                                    Research Tagging News
+                                                {% elif post.category == 'BHN' %}
+                                                    <a href="category/brain-health-news"
+                                                       class="text-uppercase text-muted text-sm letter-spacing-2">Brain
+                                                    Health News
+                                                {% elif post.category == 'RDCN' %}
+                                                    <a href="category/research-domain-criteria-news"
+                                                       class="text-uppercase text-muted text-sm letter-spacing-2">
+                                                    Research Domain Criteria News
+                                                {% else %}
+                                                    <a href="{% url 'blog-home' %}"
+                                                       class="text-uppercase text-muted text-sm letter-spacing-2">
+                                                    DEFAULT
+                                                {% endif %}
+                                                </a>
+                                                <h5 class="my-2"><a href="{% url 'blog-post' post.id %}"
+                                                                    class="text-dark">{{ post.title }}</a></h5>
+                                                <p class="text-gray-500 text-sm my-3"><i
+                                                        class="far fa-clock mr-2"></i>{{ post.created_at }}</p>
+                                                {#                                                <p class="my-2 text-muted">{{ post.content|truncatewords:10|safe }}</p>#}
+                                                <a
+                                                        href="{% url 'blog-post' post.id %}" class="btn btn-link pl-0">Read
+                                                    more<i
+                                                            class="fa fa-long-arrow-alt-right ml-2"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-lg-3 shadow" style="margin-top: 1%; height: 100%">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'new-post' %}">
+                                <button class="btn btn-link btn-block pt-3" style="margin-top: 2%;">Create New Post
+                                </button>
+                            </a>
+                        {% endif %}
+                        <br>
+                        <form class="form" style="margin-top: 3%" method="GET" action="{% url 'search' %}">
+                            <!-- Search form -->
+                            <input class="form-control" name="title" type="text" placeholder="Search blogs.."
+                                   aria-label="Search">
+                            <button type="submit" class="btn pull-right" style="margin-top: 2%">Search</button>
+                        </form>
+                        <br>
+                        <br>
+                        <br>
+                        <div class="list-group">
+                            <li class="list-group-item active"><h3>Posts by Category</h3></li>
+                            <a href="category/brain-research-tagging-news" class="list-group-item">Brain Research
+                                Tagging News</a>
+                            <a href="category/brain-health-news" class="list-group-item">Brain Health News</a>
+                            <a href="category/research-domain-criteria-news" class="list-group-item">Research Domain
+                                Criteria News</a>
+                        </div>
+                        <div class="list-group">
+                            <li class="list-group-item active"><h3>Recent Posts</h3></li>
+                            {% recent_posts %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    {% endblock %}
+</div>
+{% include 'footer.html' %}

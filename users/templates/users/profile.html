@@ -1,0 +1,226 @@
+{% load staticfiles %}
+{% load static from staticfiles %}
+{% load mathfilters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>NAMI Montana | User's Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content="http://webthemez.com"/>
+    <!-- css -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/fancybox/jquery.fancybox.css' %}" rel="stylesheet">
+    <link href="{% static 'css/flexslider.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+    <!--Pulling Awesome Font -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]><![endif]-->
+</head>
+<body>
+<div class="topbar">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="pull-left hidden-xs"><i class="fa fa-envelope"></i><span>matt@namimt.org </span></p>
+                <p class="pull-right"><i class="fa fa-phone"></i>Tel No. (406) 443-7871</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- start header -->
+<header>
+    <div class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="logo"
+                                                                     width="190px" height="50px;"/></a>
+            </div>
+            <div class="navbar-collapse collapse ">
+                <ul class="nav navbar-nav">
+                    {% if not user.is_authenticated %}
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'about' %}">About</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="{% url 'users:login' %}">Login</a></li>
+                        <li><a href="{% url 'users:signup' %}">SignUp</a></li>
+                        <li><a href="{% url 'contact' %}">Contact</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'users:dashboard' %}">Dashboard</a></li>
+                        <li class="active"><a href="{% url 'users:profile' %}">Profile</a></li>
+                        <li><a href="{% url 'users:logout' %}">Logout</a></li>
+                        <li><a href="{% url 'contact' %}">Contact</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'blog-home' %}">Blog</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- end header -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" style="margin-top: 5%">
+
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4>{{ user.username }}'s Profile</h4></div>
+                <div class="panel-body">
+                    <div class="box box-info">
+                        <div class="box-body">
+                            <div class="col-sm-6">
+                                <h4 style="color:#00b1b1;">{{ user.first_name }} {{ user.last_name }} </h4></span>
+                                <span><p>{{ user.email }}</p></span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <hr style="margin:5px 0 5px 0;">
+                            <!--   Tab nav start  -->
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#personal">Personal Information</a>
+                                </li>
+                                <li><a data-toggle="tab" href="#tagArticle">Tagged Articles</a></li>
+                                <li><a data-toggle="tab" href="#getCert">Certification Eligibility</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="personal" class="tab-pane fade in active">
+                                    <div class="col-sm-5 col-xs-6 tital ">First Name:</div>
+                                    <div class="col-sm-7 col-xs-6 ">{{ user.first_name }}</div>
+                                    <div class="clearfix"></div>
+                                    <div class="bot-border"></div>
+
+                                    <div class="col-sm-5 col-xs-6 tital ">Lat Name:</div>
+                                    <div class="col-sm-7"> {{ user.last_name }}</div>
+                                    <div class="clearfix"></div>
+                                    <div class="bot-border"></div>
+
+                                    <div class="col-sm-5 col-xs-6 tital ">No of Articles Reviewed:</div>
+                                    <div class="col-sm-7"> {{ user.tagging.all | length }}</div>
+                                    <div class="clearfix"></div>
+                                    <div class="bot-border"></div>
+
+                                    <div class="col-sm-5 col-xs-6 tital ">Date Of Joining:</div>
+                                    <div class="col-sm-7">{{ user.date_joined }}</div>
+
+                                    <div class="clearfix"></div>
+                                    <div class="bot-border"></div>
+
+                                    <div class="col-sm-5 col-xs-6 tital ">Last login:</div>
+                                    <div class="col-sm-7">{{ user.last_login }}</div>
+
+                                    <div class="clearfix"></div>
+                                    <div class="bot-border"></div>
+
+                                    <div class="col-sm-5 col-xs-6 tital ">Email:</div>
+                                    <div class="col-sm-7">{{ user.email }}</div>
+
+                                    <div class="clearfix"></div>
+                                    <div class="bot-border"></div>
+                                    <div class="col-sm-5 col-xs-6 tital ">List of reviewed Articles:</div>
+                                    <div class="col-sm-7">
+                                        <ul style="list-style: none">
+                                            {% for art in user.tagging.all %}
+                                                <li><a href="/users/article/view/{{ art.id }}/">{{ art.id }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="bot-border"></div>
+                                    <!-- /.box-body -->
+                                </div>
+                                <div id="tagArticle" class="tab-pane fade">
+                                    <h3> Article you have tagged: <i style="color: darkred">Total
+                                        ( {{ user.tagging.all | length }} )</i></h3>
+                                    {% for tagged in user.tagging.all %}
+                                        <div class="col-sm-5 col-xs-6 tital ">Article Id</div>
+                                        <div class="col-sm-7 col-xs-6 ">{{ tagged.id }}</div>
+                                        <div class="clearfix"></div>
+                                        <div class="bot-border"></div>
+
+                                        <div class="col-sm-5 col-xs-6 tital ">Tagged By:</div>
+                                        <div class="col-sm-7"> {{ tagged.user }}</div>
+                                        <div class="clearfix"></div>
+                                        <div class="bot-border"></div>
+
+                                        <div class="col-sm-5 col-xs-6 tital ">Is Relevant to Category:</div>
+                                        <div class="col-sm-7"> {{ tagged.category_fit }}</div>
+                                        <div class="clearfix"></div>
+                                        <div class="bot-border"></div>
+                                        <div class="col-sm-5 col-xs-6 tital ">Article Link:</div>
+                                        <div class="col-sm-7"> {{ tagged.link }}</div>
+                                        <div class="clearfix"></div>
+                                        <div class="bot-border"></div>
+                                        <div class="col-sm-5 col-xs-6 tital ">Article Category:</div>
+                                        <div class="col-sm-7"> {{ tagged.category }}</div>
+                                        <div class="clearfix"></div>
+                                        <div class="bot-border"></div>
+                                        <div class="col-sm-5 col-xs-6 tital ">Your Feedback:</div>
+                                        <div class="col-sm-7"> {{ tagged.relevant_feedback }}</div>
+                                        <div class="clearfix"></div>
+                                        <div class="bot-border"></div>
+                                        <!-- /.box-body -->
+                                        <hr style="margin:5px 0 5px 0; color:darkred; border-bottom: solid darkred 3px;">
+                                    {% endfor %}
+                                </div>
+                                <div id="getCert" class="tab-pane fade in">
+                                    {% if user.tagging.all.count > 11 %}
+                                        <h5>Congratulations,</h5><p> You are eligible to apply for a certificate of
+                                        completion from Nami Montana. You have
+                                        completed <b>{{ user.tagging.all.count }}</b> articles
+                                        which is equal to
+                                        <b>{{ user.tagging.all.count|mul:5|div:60|floatformat:3 }}</b> hours.
+                                        <br> Click the Button below to apply for a certificate:</p>
+                                        <form method="get" action="{% url 'users:payment' %}">
+                                            <br/>
+                                            <button class="btn btn-lg btn-primary btn-block" type="submit">Get
+                                                Certificate
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <h5><br>Currently, You are not eligible to apply for a certificate.You must
+                                            need to complete
+                                            at least 1 hour of training which is equal to 12 articles.You have
+                                            completed only
+                                            {{ user.tagging.all.count }} articles.So, you need to tag at
+                                            least {{ 12|sub:user.tagging.all.count }}
+                                            articles more to be eligible for a certificate.</h5>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% block js %}
+                <script>
+                    $(function () {
+                        $('#profile-image1').on('click', function () {
+                            $('#profile-image-upload').click();
+                        });
+                    });
+
+                    function getAjax(url) {
+                        var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+                        xhr.open('GET', url);
+                        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                        xhr.send();
+                        return xhr;
+                    }
+                </script>
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% include 'footer.html' %}
